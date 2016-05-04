@@ -162,10 +162,14 @@ public class MainActivity extends Activity
 		{
 			ImageView v = (ImageView) grid.getChildAt(i);
 			colorList[i] = ((ColorDrawable) v.getBackground().mutate()).getColor();
-			toWrite += "<rect x=\"" + (i % 16) * 10 + "\" y=\"" + (i / 16) * 10 + "\" width=\"10\" height=\"10\" fill=\"#" + Integer.toHexString(colorList[i]).substring(2) + "\"/>";
+			int a = colorList[i] >> 24 & 0x000000ff;
+			float trueA = (float) a / 255;
+			int r = colorList[i] << 8 >> 24 & 0x000000ff;
+			int g = colorList[i] << 16 >> 24 & 0x000000ff;
+			int b = colorList[i] << 24 >> 24 & 0x000000ff;
+			toWrite += "<rect x=\"" + (i % 16) * 10 + "\" y=\"" + (i / 16) * 10 + "\" width=\"10\" height=\"10\" fill=\"rgba(" + r + ", " + g + ", " + b + ", " + trueA + ")\"/>";
 		}
 		toWrite += "</svg>";
-		Log.d("Save", toWrite);
 		try
 		{
 			File f = new File(Environment.getExternalStorageDirectory().getPath() + "/a.svg");
